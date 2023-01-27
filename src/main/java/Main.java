@@ -2,7 +2,6 @@ import Clases.HospitalEntidad;
 import Clases.MedicoEntidad;
 import jakarta.persistence.*;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -23,12 +22,14 @@ public class Main {
             System.out.println("==========MENU==========");
             System.out.println("1. Insertar un registro para la tabla hospital.");
             System.out.println("2. Buscar un registro de la tabla hospital.");
-            System.out.println("3. Actualizar un registro de la tabla hospital.");
-            System.out.println("4. Borrar un registro de la tabla hospital.");
-            System.out.println("5. Insertar un registro para la tabla medico.");
-            System.out.println("6. Buscar un registro de la tabla medico.");
-            System.out.println("7. Actualizar un registro de la tabla medico.");
-            System.out.println("8. Borrar un registro de la tabla medico.");
+            System.out.println("3. Listar todos los registros de la tabla hospital.");
+            System.out.println("4. Actualizar un registro de la tabla hospital.");
+            System.out.println("5. Borrar un registro de la tabla hospital.");
+            System.out.println("6. Insertar un registro para la tabla medico.");
+            System.out.println("7. Buscar un registro de la tabla medico.");
+            System.out.println("8. Listar todos los registros de la tabla medico.");
+            System.out.println("9. Actualizar un registro de la tabla medico.");
+            System.out.println("10. Borrar un registro de la tabla medico.");
             System.out.println("0. Salir.");
             System.out.print("Introduce la opcion que deseas realizar: ");
             int opcion = sc.nextInt();
@@ -117,7 +118,11 @@ public class Main {
         hospital = entityManager.find(HospitalEntidad.class, codigo);
         //Si no es nulo muestra el hospital y sino un mensaje de no existe
         if (hospital != null) {
-            System.out.println(hospital);
+            System.out.println(hospital.getCodigo());
+            System.out.println(hospital.getNombre());
+            System.out.println(hospital.getLocalidad());
+            System.out.println(hospital.getTelefono());
+            System.out.println(hospital.getNumeroCamas());
         } else {
             System.out.println("No existe ese hospital.");
         }
@@ -126,14 +131,17 @@ public class Main {
     }
     //Funcion que nos permite listar todos los registro de la tabla hospital
     private static void listarHospitales() {
+        int i = 1;
         //Comienza la transaccion
         transaction.begin();
-        //Buscamos en la base de datos todos los objetos, los guardamos en una lista y lo mostramos por pantalla
-        List<HospitalEntidad> listaHospitales;
-        Query query = entityManager.createQuery("SELECT codigo FROM HospitalEntidad ");
-        listaHospitales = query.getResultList();
-        for (HospitalEntidad h : listaHospitales) {
-            System.out.println(h.toString());
+        //Buscamos en la base de datos todos los objetos y lo mostramos por pantalla
+        while (entityManager.find(HospitalEntidad.class, i) != null) {
+            System.out.println(entityManager.find(HospitalEntidad.class, i).getCodigo());
+            System.out.println(entityManager.find(HospitalEntidad.class, i).getNombre());
+            System.out.println(entityManager.find(HospitalEntidad.class, i).getLocalidad());
+            System.out.println(entityManager.find(HospitalEntidad.class, i).getTelefono());
+            System.out.println(entityManager.find(HospitalEntidad.class, i).getNumeroCamas());
+            i++;
         }
         //Se vuelca en la base de datos
         transaction.commit();
@@ -234,8 +242,11 @@ public class Main {
         medico = entityManager.find(MedicoEntidad.class, medico_cod);
         //Si no es nulo muestra el medico y sino un mensaje de no existe
         if (medico != null) {
-            System.out.println(medico);
-            System.out.println();
+            System.out.println(medico.getMedicoCod());
+            System.out.println(medico.getNombre());
+            System.out.println(medico.getApellido());
+            System.out.println(medico.getEspecialidad());
+            System.out.println(medico.getCodigoHospital());
         } else {
             System.out.println("No existe ese medico.");
         }
@@ -244,14 +255,17 @@ public class Main {
     }
     //Funcion que nos permite listar todos los registro de la tabla medico
     private static void listarMedicos() {
+        int i = 1;
         //Comienza la transaccion
         transaction.begin();
-        //Buscamos en la base de datos todos los objetos, los guardamos en una lista y lo mostramos por pantalla
-        List<MedicoEntidad> listaMedicos;
-        Query query = entityManager.createQuery("SELECT medicoCod FROM MedicoEntidad ");
-        listaMedicos = query.getResultList();
-        for (MedicoEntidad m : listaMedicos) {
-            System.out.println(m.toString());
+        //Buscamos en la base de datos todos los objetos y lo mostramos por pantalla
+        while (entityManager.find(MedicoEntidad.class, i) != null) {
+            System.out.println(entityManager.find(MedicoEntidad.class, i).getMedicoCod());
+            System.out.println(entityManager.find(MedicoEntidad.class, i).getNombre());
+            System.out.println(entityManager.find(MedicoEntidad.class, i).getApellido());
+            System.out.println(entityManager.find(MedicoEntidad.class, i).getEspecialidad());
+            System.out.println(entityManager.find(MedicoEntidad.class, i).getCodigoHospital());
+            i++;
         }
         //Se vuelca en la base de datos
         transaction.commit();
